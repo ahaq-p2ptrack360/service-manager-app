@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-imd_preferences/shared_preferences.dart';
-import 'package:anwarport 'package:http/http.dart' as http;
-import 'package:share/dashboard.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dashboard.dart';
 
 void main() {
-  runApp( MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +21,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 /// -------------------- Splash Screen --------------------
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,9 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 5), () async {
       final prefs = await SharedPreferences.getInstance();
-      final IsLogin = prefs.getString("islogin");
-      print(IsLogin);
-      if (IsLogin == "true") {
+      final isLogin = prefs.getString("islogin");
+      print(isLogin);
+      if (isLogin == "true") {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const Dashboard()),
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       }
-    },);
+    });
   }
 
   @override
@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
           color: Colors.white,
           colorBlendMode: BlendMode.srcIn,
           errorBuilder: (context, error, stackTrace) {
-            return  Text(
+            return Text(
               'Image not found',
               style: GoogleFonts.poppins(color: Colors.white),
             );
@@ -80,7 +80,6 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 /// -------------------- Login Screen --------------------
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -91,7 +90,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
 
   bool rememberMe = false;
   bool _obscurePassword = true;
@@ -126,11 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // Check if login was successful based on your API response structure
         if (data["email"] != null) {
           final prefs = await SharedPreferences.getInstance();
 
-          // Handle null values by providing default values or checking existence
           await prefs.setString("id", data["id"]?.toString() ?? "");
           await prefs.setString("email", data["email"] ?? "");
           await prefs.setString("name", data["name"] ?? "");
@@ -140,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
           await prefs.setString("is_super_admin", data["is_super_admin"]?.toString() ?? "");
           await prefs.setString("address", data["address"] ?? "");
           await prefs.setString("islogin", "true");
-
 
           _showSnackBar("Login successful!");
 
@@ -168,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -182,7 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-
               Container(
                 height: height * 0.45,
                 width: double.infinity,
@@ -211,8 +204,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.white,
                     ),
                     const SizedBox(height: 10),
-
-
                     Text(
                       "Welcome To",
                       style: GoogleFonts.poppins(
@@ -230,12 +221,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                   ],
                 ),
               ),
-
-
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: width * 0.07,
@@ -325,10 +313,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           TextButton(
                             onPressed: () {},
-                            child:  Text(
+                            child: Text(
                               "Forgot Password?",
                               style: GoogleFonts.poppins(
-                                color: Color(0xff332757),
+                                color: const Color(0xff332757),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -337,8 +325,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       SizedBox(height: height * 0.025),
-
-
                       _isLoading
                           ? const CircularProgressIndicator(
                           color: Color(0xff332757))
@@ -351,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: _login,
-                        child:  Text(
+                        child: Text(
                           "Login",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
