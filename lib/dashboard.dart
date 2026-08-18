@@ -10,6 +10,7 @@ import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:anwar/chats.dart';
 
 import 'notification_service.dart';
 import 'notifications_screen.dart';
@@ -1504,6 +1505,27 @@ class _DashboardState extends State<Dashboard> {
                 backgroundColor: const Color(0xff332757),
                 mini: true,
                 child: const Icon(Icons.sort, color: Colors.white),
+              ),
+            ),
+
+          // NEW: Chat FAB - opens the existing Chats screen (same as MyDrawer's Chats menu item)
+          if (isFabExpanded)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: FloatingActionButton(
+                heroTag: "chat_fab",
+                onPressed: () {
+                  setState(() {
+                    isFabExpanded = false;
+                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Chats()),
+                  );
+                },
+                backgroundColor: const Color(0xff332757),
+                mini: true,
+                child: const Icon(Icons.chat_bubble_outline, color: Colors.white),
               ),
             ),
 
